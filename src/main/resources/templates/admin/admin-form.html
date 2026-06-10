@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head><title>Admin Form</title></head>
+<body>
+<section class="col-md-6">
+    <h2>Add Administrator</h2>
+    <form th:action="@{/admin/admins}" th:object="${admin}" method="post">
+        <div class="mb-3"><label class="form-label">Full Name</label><input class="form-control" th:field="*{fullName}" required/></div>
+        <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" th:field="*{email}" required/></div>
+        <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" th:field="*{password}" required/></div>
+        <div class="mb-3"><label class="form-label">Role</label><input class="form-control" th:field="*{role}"/></div>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+</section>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head><title>Manage Suppliers</title></head>
+<body>
+<section>
+    <h2>Suppliers</h2>
+    <table class="table">
+        <thead><tr><th>ID</th><th>Company</th><th>Type</th><th>Verification</th><th></th></tr></thead>
+        <tbody>
+        <tr th:each="s : ${suppliers}">
+            <td th:text="${s.supplierId}"></td>
+            <td th:text="${s.companyName}"></td>
+            <td th:text="${s.supplierType}"></td>
+            <td th:text="${s.verificationStatus}"></td>
+            <td>
+                <form th:action="@{/admin/suppliers/{id}/delete(id=${s.supplierId})}" method="post" class="d-inline">
+                    <button class="btn btn-sm btn-danger" type="submit">Remove</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/admin/dashboard}" class="btn btn-link">Back</a>
+</section>
+</body>
+</html>

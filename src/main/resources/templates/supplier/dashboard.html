@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head><title>Supplier Dashboard</title></head>
+<body>
+<section>
+    <div class="d-flex justify-content-between mb-4">
+        <h2 th:text="${supplier.companyName}">Supplier</h2>
+        <a th:href="@{/supplier/logout}" class="btn btn-outline-secondary btn-sm">Logout</a>
+    </div>
+    <p>Verification: <span class="badge bg-warning" th:text="${supplier.verificationStatus}"></span></p>
+    <div class="row g-2 mb-4">
+        <div class="col-md-3"><a th:href="@{/supplier/cars}" class="btn btn-outline-primary w-100">Manage Cars</a></div>
+        <div class="col-md-3"><a th:href="@{/supplier/orders}" class="btn btn-outline-primary w-100">Rental Orders</a></div>
+        <div class="col-md-3"><a th:href="@{/supplier/reports}" class="btn btn-outline-primary w-100">Reports</a></div>
+        <div class="col-md-3"><a th:href="@{/supplier/verification}" class="btn btn-outline-primary w-100">Verification</a></div>
+    </div>
+    <h4>Your Fleet (<span th:text="${cars.size()}"></span> cars)</h4>
+</section>
+</body>
+</html>
