@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head><title>Admin Login</title></head>
+<body>
+<section class="col-md-5 mx-auto">
+    <h2>Admin Login</h2>
+    <p class="text-muted small">Default: admin@carsharex.com / admin123</p>
+    <form th:action="@{/admin/login}" method="post">
+        <div class="mb-3"><label class="form-label">Email</label><input type="email" name="email" class="form-control" required/></div>
+        <div class="mb-3"><label class="form-label">Password</label><input type="password" name="password" class="form-control" required/></div>
+        <button class="btn btn-dark" type="submit">Login</button>
+    </form>
+</section>
+</body>
+</html>
