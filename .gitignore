@@ -1,8 +1,18 @@
-HELP.md
-target/
+# OS
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Maven / Java (backend)
+**/target/
 .mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+!.mvn/wrapper/maven-wrapper.jar
+HELP.md
 
 ### STS ###
 .apt_generated
@@ -14,7 +24,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -25,9 +35,17 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
+**/build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
+
+# Node / frontend (frontend/.gitignore has more; these catch root-level installs)
+node_modules/
+dist/
+dist-ssr/
+
+
+.env

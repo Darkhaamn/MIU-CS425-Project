@@ -1,0 +1,63 @@
+name: Backend Docker Deploy
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-docker.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: backend-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t carsharex-backend .
+
+      - name: Run backend container
+        env:
+          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+        run: |
+          docker rm -f carsharex-backend 2>/dev/null || true
+          docker run -d \
+            --name carsharex-backend \
+            --restart unless-stopped \
+            --add-host=host.docker.internal:host-gateway \
+            -p 8080:8080 \
+            -e SPRING_DATASOURCE_URL \
+            -e SPRING_DATASOURCE_USERNAME \
+            -e SPRING_DATASOURCE_PASSWORD \
+            carsharex-backend
+
+      - name: Wait for backend
+        run: |
+          echo "Waiting for backend on http://localhost:8080 ..."
+          for i in $(seq 1 36); do
+            if curl -sf http://localhost:8080/ > /dev/null; then
+              echo "Backend is healthy."
+              exit 0
+            fi
+            echo "Attempt $i/36 — not ready yet"
+            sleep 5
+          done
+          echo "Backend failed to start."
+          docker logs --tail=100 carsharex-backend
+          exit 1
+
+      - name: Show container status
+        if: always()
+        run: docker ps -a --filter name=carsharex-backend
