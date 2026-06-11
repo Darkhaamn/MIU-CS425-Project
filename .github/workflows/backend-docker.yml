@@ -41,6 +41,8 @@ jobs:
             -e SPRING_DATASOURCE_URL \
             -e SPRING_DATASOURCE_USERNAME \
             -e SPRING_DATASOURCE_PASSWORD \
+            -e SESSION_COOKIE_SAME_SITE=None \
+            -e SESSION_COOKIE_SECURE=true \
             carsharex-backend
 
       - name: Wait for backend
