@@ -1,3 +1,5 @@
+export { API_BASE_URL } from './baseUrl'
+
 import { apiRequest } from './client'
 import type {
   Admin,
