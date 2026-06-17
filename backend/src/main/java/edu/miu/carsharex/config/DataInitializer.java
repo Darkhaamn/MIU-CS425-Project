@@ -110,6 +110,7 @@ public class DataInitializer {
             camry.setCarType("Sedan");
             camry.setPricePerDay(45.00);
             camry.setAvailabilityStatus(true);
+            camry.setImageUrl("https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&auto=format&fit=crop&q=80");
             camry.setSupplier(cityCars);
             camry = carRepository.save(camry);
 
@@ -119,6 +120,7 @@ public class DataInitializer {
             crv.setCarType("SUV");
             crv.setPricePerDay(65.00);
             crv.setAvailabilityStatus(true);
+            crv.setImageUrl("https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&auto=format&fit=crop&q=80");
             crv.setSupplier(cityCars);
             crv = carRepository.save(crv);
 
@@ -128,6 +130,7 @@ public class DataInitializer {
             tesla.setCarType("Electric");
             tesla.setPricePerDay(85.00);
             tesla.setAvailabilityStatus(false);
+            tesla.setImageUrl("https://images.unsplash.com/photo-1593941707882-a5bba14938ca?w=800&auto=format&fit=crop&q=80");
             tesla.setSupplier(premium);
             tesla = carRepository.save(tesla);
 
@@ -137,6 +140,7 @@ public class DataInitializer {
             bmw.setCarType("SUV");
             bmw.setPricePerDay(95.00);
             bmw.setAvailabilityStatus(true);
+            bmw.setImageUrl("https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&auto=format&fit=crop&q=80");
             bmw.setSupplier(premium);
             bmw = carRepository.save(bmw);
 

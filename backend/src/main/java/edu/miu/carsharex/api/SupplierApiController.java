@@ -5,6 +5,7 @@ import edu.miu.carsharex.api.mapper.DtoMapper;
 import edu.miu.carsharex.config.SessionConstants;
 import edu.miu.carsharex.model.Car;
 import edu.miu.carsharex.service.BookingService;
+import edu.miu.carsharex.service.CarImageStorageService;
 import edu.miu.carsharex.service.CarService;
 import edu.miu.carsharex.service.ReportService;
 import edu.miu.carsharex.service.SupplierService;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class SupplierApiController {
     private final BookingService bookingService;
     private final ReportService reportService;
     private final VerificationService verificationService;
+    private final CarImageStorageService carImageStorageService;
     private final DtoMapper mapper;
 
     public SupplierApiController(SupplierService supplierService,
@@ -36,12 +39,14 @@ public class SupplierApiController {
                                  BookingService bookingService,
                                  ReportService reportService,
                                  VerificationService verificationService,
+                                 CarImageStorageService carImageStorageService,
                                  DtoMapper mapper) {
         this.supplierService = supplierService;
         this.carService = carService;
         this.bookingService = bookingService;
         this.reportService = reportService;
         this.verificationService = verificationService;
+        this.carImageStorageService = carImageStorageService;
         this.mapper = mapper;
     }
 
@@ -59,6 +64,13 @@ public class SupplierApiController {
     public List<CarResponse> listCars(HttpSession session) {
         Long supplierId = requireSupplier(session);
         return mapper.toCarResponses(carService.findBySupplier(supplierId));
+    }
+
+    @PostMapping("/cars/upload-image")
+    public CarImageUploadResponse uploadCarImage(@RequestParam("image") MultipartFile image,
+                                                 HttpSession session) {
+        requireSupplier(session);
+        return new CarImageUploadResponse(carImageStorageService.store(image));
     }
 
     @PostMapping("/cars")
@@ -136,6 +148,7 @@ public class SupplierApiController {
         car.setPricePerDay(request.pricePerDay());
         car.setCarType(request.carType());
         car.setAvailabilityStatus(request.availabilityStatus());
+        car.setImageUrl(request.imageUrl());
         return car;
     }
 

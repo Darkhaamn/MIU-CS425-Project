@@ -26,11 +26,16 @@ spring.datasource.password=YOUR_MYSQL_PASSWORD
 
 ## 3. Build and run
 
+From the **backend** directory:
+
 ```bash
+cd backend
 ./mvnw spring-boot:run
 ```
 
-Or from your IDE, run `CarShareXApplication.java`.
+Or from your IDE, run `backend/src/main/java/edu/miu/carsharex/CarShareXApplication.java`.
+
+**IntelliJ:** Reimport the Maven project (root `pom.xml` + `backend/pom.xml`). The run configuration must include `backend/src/main/resources` on the classpath.
 
 ## 4. Open the application
 
@@ -53,6 +58,7 @@ Visit: http://localhost:8080
 
 | Issue | Solution |
 |-------|----------|
+| Failed to configure a DataSource / no `url` | Run from `backend/` or reimport Maven; ensure `application.properties` is on the classpath |
 | Connection refused | Ensure MySQL is running on port 3306 |
 | Access denied | Check username/password in `application.properties` |
 | Port 8080 in use | Change `server.port` in `application.properties` |

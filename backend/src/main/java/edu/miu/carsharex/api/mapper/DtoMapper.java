@@ -50,7 +50,8 @@ public class DtoMapper {
                 car.isAvailabilityStatus(),
                 car.getCarType(),
                 supplier != null ? supplier.getSupplierId() : null,
-                supplier != null ? supplier.getCompanyName() : null
+                supplier != null ? supplier.getCompanyName() : null,
+                car.getImageUrl()
         );
     }
 

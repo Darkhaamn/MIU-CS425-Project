@@ -134,7 +134,12 @@ public class SupplierController {
         if (result.hasErrors()) {
             return "supplier/car-form";
         }
-        carService.save(car, supplierId);
+        try {
+            carService.save(car, supplierId);
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+            return "supplier/car-form";
+        }
         redirect.addFlashAttribute("message", "Car added successfully");
         return "redirect:/supplier/cars";
     }

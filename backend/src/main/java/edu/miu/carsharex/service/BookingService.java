@@ -67,6 +67,10 @@ public class BookingService {
             throw new IllegalStateException("Customer identity verification failed");
         }
 
+        LocalDate today = LocalDate.now();
+        if (pickupDate.isBefore(today)) {
+            throw new IllegalArgumentException("Pickup date cannot be in the past");
+        }
         if (returnDate.isBefore(pickupDate) || returnDate.isEqual(pickupDate)) {
             throw new IllegalArgumentException("Return date must be after pickup date");
         }

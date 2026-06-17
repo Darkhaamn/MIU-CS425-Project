@@ -8,5 +8,6 @@ public record CarResponse(
         boolean availabilityStatus,
         String carType,
         Long supplierId,
-        String supplierName
+        String supplierName,
+        String imageUrl
 ) {}

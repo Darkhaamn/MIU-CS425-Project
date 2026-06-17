@@ -8,5 +8,6 @@ public record CarRequest(
         @NotBlank String model,
         @Positive double pricePerDay,
         String carType,
-        boolean availabilityStatus
+        boolean availabilityStatus,
+        String imageUrl
 ) {}

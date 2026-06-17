@@ -56,8 +56,11 @@ public class CarService {
     public Car save(Car car, Long supplierId) {
         Supplier supplier = supplierRepository.findById(supplierId)
                 .orElseThrow(() -> new IllegalArgumentException("Supplier not found"));
+        requireApprovedSupplier(supplier);
+        if (car.getImageUrl() == null || car.getImageUrl().isBlank()) {
+            throw new IllegalArgumentException("Car image is required");
+        }
         car.setSupplier(supplier);
-        // Mock car verification when supplier adds a car (use case diagram)
         verificationService.verifyCar(car);
         return carRepository.save(car);
     }
@@ -70,7 +73,17 @@ public class CarService {
         existing.setPricePerDay(updated.getPricePerDay());
         existing.setCarType(updated.getCarType());
         existing.setAvailabilityStatus(updated.isAvailabilityStatus());
+        if (updated.getImageUrl() != null && !updated.getImageUrl().isBlank()) {
+            existing.setImageUrl(updated.getImageUrl());
+        }
         return carRepository.save(existing);
+    }
+
+    private void requireApprovedSupplier(Supplier supplier) {
+        if (!"APPROVED".equalsIgnoreCase(supplier.getVerificationStatus())) {
+            throw new IllegalStateException(
+                    "Your supplier verification must be approved by an admin before you can add cars");
+        }
     }
 
     public void deleteById(Long id) {

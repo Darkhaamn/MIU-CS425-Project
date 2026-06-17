@@ -15,7 +15,7 @@
     <description>Car Rental Services Application</description>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>25</java.version>
     </properties>
 
     <dependencies>
