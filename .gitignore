@@ -47,5 +47,7 @@ node_modules/
 dist/
 dist-ssr/
 
+# Uploaded car images
+uploads/
 
 .env

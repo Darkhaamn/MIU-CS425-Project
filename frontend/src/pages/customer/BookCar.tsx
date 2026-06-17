@@ -37,6 +37,14 @@ export default function BookCar() {
 
   const estimatedTotal = car && days > 0 ? car.pricePerDay * days : 0
 
+  const today = useMemo(() => new Date().toISOString().split('T')[0], [])
+  const minReturnDate = useMemo(() => {
+    if (!pickupDate) return today
+    const next = new Date(`${pickupDate}T00:00:00`)
+    next.setDate(next.getDate() + 1)
+    return next.toISOString().split('T')[0]
+  }, [pickupDate, today])
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
@@ -83,10 +91,22 @@ export default function BookCar() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Pickup date">
-                    <Input type="date" required value={pickupDate} onChange={(e) => setPickupDate(e.target.value)} />
+                    <Input
+                      type="date"
+                      required
+                      min={today}
+                      value={pickupDate}
+                      onChange={(e) => setPickupDate(e.target.value)}
+                    />
                   </Field>
                   <Field label="Return date">
-                    <Input type="date" required value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
+                    <Input
+                      type="date"
+                      required
+                      min={minReturnDate}
+                      value={returnDate}
+                      onChange={(e) => setReturnDate(e.target.value)}
+                    />
                   </Field>
                 </div>
                 <Field label="Payment method">

@@ -8,7 +8,11 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://cs425-project-api.darkhaa.tech',
+        target: process.env.VITE_DEV_API_PROXY ?? 'http://localhost:8080',
+        changeOrigin: true,
+      },
+      '/uploads': {
+        target: process.env.VITE_DEV_API_PROXY ?? 'http://localhost:8080',
         changeOrigin: true,
       },
     },

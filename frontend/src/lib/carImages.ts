@@ -1,3 +1,4 @@
+import { apiUrl } from '../api/baseUrl'
 import type { Car } from '../types'
 
 const TYPE_IMAGES: Record<string, string> = {
@@ -11,14 +12,23 @@ const TYPE_IMAGES: Record<string, string> = {
 const DEFAULT_IMAGE =
   'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&auto=format&fit=crop&q=80'
 
-export function getCarImage(car: Pick<Car, 'carType' | 'brand'>) {
+export function resolveImageUrl(imageUrl?: string | null) {
+  if (!imageUrl) return null
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl
+  }
+  return `${apiUrl('')}${imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`}`
+}
+
+export function getCarImage(car: Pick<Car, 'carType' | 'brand' | 'imageUrl'>) {
+  const uploaded = resolveImageUrl(car.imageUrl)
+  if (uploaded) return uploaded
   if (car.carType && TYPE_IMAGES[car.carType]) {
     return TYPE_IMAGES[car.carType]
   }
   return DEFAULT_IMAGE
 }
 
-/** Stable display score for listing cards (visual only, derived from car id) */
 export function getCarDisplayRating(carId: number) {
   return (4.5 + (carId % 5) * 0.1).toFixed(1)
 }

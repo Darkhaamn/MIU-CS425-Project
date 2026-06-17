@@ -1,5 +1,6 @@
 export { API_BASE_URL } from './baseUrl'
 
+import { apiUrl } from './baseUrl'
 import { apiRequest } from './client'
 import type {
   Admin,
@@ -91,6 +92,38 @@ export const supplierApi = {
   dashboard: () =>
     apiRequest<{ supplier: Supplier; cars: Car[] }>('/api/supplier/dashboard'),
   cars: () => apiRequest<Car[]>('/api/supplier/cars'),
+  uploadCarImage: async (file: File) => {
+    const formData = new FormData()
+    formData.append('image', file)
+    let response: Response
+    try {
+      response = await fetch(apiUrl('/api/supplier/cars/upload-image'), {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+      })
+    } catch {
+      throw new Error(
+        'Could not reach the API server. Start the backend locally (cd backend && ./mvnw spring-boot:run) or deploy the latest API with image upload support.'
+      )
+    }
+    if (!response.ok) {
+      const message = await response.text().then((t) => {
+        try {
+          return (JSON.parse(t) as { message?: string }).message
+        } catch {
+          return response.statusText
+        }
+      })
+      if (response.status === 405) {
+        throw new Error(
+          'Image upload is not available on this API server. Run the local backend or deploy the latest backend version.'
+        )
+      }
+      throw new Error(message || 'Image upload failed')
+    }
+    return (await response.json()) as { imageUrl: string }
+  },
   addCar: (data: Record<string, unknown>) =>
     apiRequest<Car>('/api/supplier/cars', { method: 'POST', body: JSON.stringify(data) }),
   updateCar: (id: number, data: Record<string, unknown>) =>

@@ -16,6 +16,7 @@ export interface Car {
   carType: string
   supplierId: number
   supplierName: string
+  imageUrl?: string | null
 }
 
 export interface Customer {

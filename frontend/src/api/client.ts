@@ -1,5 +1,5 @@
 import type { ApiError } from '../types'
-import { API_BASE_URL } from './index'
+import { apiUrl } from './baseUrl'
 
 export class ApiClientError extends Error {
   status: number
@@ -28,7 +28,7 @@ export async function apiRequest<T>(
     headers.set('Content-Type', 'application/json')
   }
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const response = await fetch(apiUrl(path), {
     ...options,
     headers,
     credentials: 'include',
