@@ -15,9 +15,13 @@ FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 
 RUN groupadd --system spring && useradd --system --gid spring spring
-USER spring:spring
 
 COPY --from=build /app/target/*.jar app.jar
+
+# Create a writable upload directory owned by the non-root runtime user
+RUN mkdir -p /app/uploads/cars && chown -R spring:spring /app
+
+USER spring:spring
 
 EXPOSE 8080
 
